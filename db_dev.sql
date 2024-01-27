@@ -1,10 +1,11 @@
---Create a database and 3 users and grant them all the permissions.
+/* Create a database and 3 users and grant them all the permissions.*/
 
 CREATE DATABASE IF NOT EXISTS sdms_db;
 USE sdms_db;
-CREATE USER IF NOT EXISTS alphonse@'localhost' IDENTIFIED BY 'admin01';
-CREATE USER IF NOT EXISTS aboki@'localhost' IDENTIFIED BY 'admin02';
-CREATE USER IF NOT EXISTS richard@'localhost' IDENTIFIED BY 'admin03';
+
+CREATE USER IF NOT EXISTS alphonse@'localhost' IDENTIFIED BY 'sdms_pwd';
+CREATE USER IF NOT EXISTS aboki@'localhost' IDENTIFIED BY 'sdms_pwd';
+CREATE USER IF NOT EXISTS richard@'localhost' IDENTIFIED BY 'sdms_pwd';
 
 GRANT ALL PRIVILEGES ON sdms_db.* TO alphonse@'localhost';
 GRANT ALL PRIVILEGES ON sdms_db.* TO richard@'localhost';

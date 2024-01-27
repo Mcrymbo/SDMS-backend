@@ -31,7 +31,7 @@ class BaseModel:
         """ updates updated_at with current time """
         self.updated_at = datetime.now()
         storage.new(self)
-        storae.save()
+        storage.save()
 
     def to_dict(self, cls=None):
         """ creates a dict object for an instance """

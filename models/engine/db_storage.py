@@ -23,7 +23,7 @@ class DBStorage:
         SDMS_PWD = getenv('SDMS_PWD')
         SDMS_HOST = getenv('SDMS_HOST')
         SDMS_DB = getenv('SDMS_DB')
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
+        self.__engine = create_engine('mysql+mysqlclient://{}:{}@{}/{}'
                                       .format(SDMS_USER,
                                               SDMS_PWD,
                                               SDMS_HOST,
