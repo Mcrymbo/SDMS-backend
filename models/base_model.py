@@ -9,7 +9,7 @@ import uuid
 from models import storage
 
 Base = declarative_base()
-
+time_format = '%Y-%m-%dT%H:%M:%S.%f'
 
 class BaseModel:
     id = Column(String(60), primary_key=True)
@@ -30,3 +30,17 @@ class BaseModel:
     def save(self):
         """ updates updated_at with current time """
         self.updated_at = datetime.now()
+        storage.new(self)
+        storae.save()
+
+    def to_dict(self, cls=None):
+        """ creates a dict object for an instance """
+        new_dict = self.__dict__.copy()
+        if 'created_at' in new_dict:
+            new_dict['created_at'] = new_dict['created_at'].strftime(time_format)
+        if 'updated_at' in new_dict:
+            new_dict['updated_at'] = new_dict['updated_at'].strftime(time_format)
+        new_dict['__class__'] = self.__class__.__name__
+        if '_sa_instance_state' in new_dict:
+            del new_dict['_sa_instance_state']
+        return new_dict
