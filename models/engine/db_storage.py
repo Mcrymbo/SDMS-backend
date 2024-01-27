@@ -19,11 +19,15 @@ class DBStorage:
 
     def __init__(self):
         """ instantiate DBStorage """
-        APP_USER = getenv('APP_USER')
-        APP_PWD = getenv('APP_PWD')
-        APP_HOST = getenv('APP_HOST')
-        APP_DB = getenv('APP_DB')
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(APP_USER, APP_PWD, APP_HOST, APP_DB))
+        SDMS_USER = getenv('SDMS_USER')
+        SDMS_PWD = getenv('SDMS_PWD')
+        SDMS_HOST = getenv('SDMS_HOST')
+        SDMS_DB = getenv('SDMS_DB')
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
+                                      .format(SDMS_USER,
+                                              SDMS_PWD,
+                                              SDMS_HOST,
+                                              SDMS_DB))
 
     def new(self, obj):
         """ add new item to database """
