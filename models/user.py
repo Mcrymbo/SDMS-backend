@@ -12,4 +12,10 @@ class User(BaseModel, Base):
     first_name = Column(String(128), nullable=False)
     last_name = Column(String(128), nullable=False)
     email = Column(String(128), nullable=False)
+    phone_number = Column(String(12), nullable=True)
     password = Column(String(128), nullable=False)
+
+    def __init__(self, *args, **kwargs):
+        """ initializing the user class """
+        super().__init__(*args, **kwargs)
+
