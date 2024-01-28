@@ -22,10 +22,22 @@ def users():
 
 @app_views.route('/users/<user_id>', methods=['GET'], strict_slashes=False)
 def user(user_id):
-    if not user_id:
-        return jsonify({'User': 'No user'})
-    user = storage.get('User', user_id)
-    return make_response(jsonify(user.to_dict()), 200)
+    """ gets a user """
+    user = storage.get(User, user_id)
+
+    if not user:
+        abort(404)
+    return jsonify(user.to_dict())
+
+@app_views.route('/users/<user_id>', methods=["DELETE"], strict_slashes=False)
+def delete_user(user_id):
+    """ delte a user from database """
+    user = storage.get(User, user_id)
+    if not user:
+        abort(404)
+    storage.delete(user)
+    storage.save()
+    return make_response('user with id {} deleted'.format(user.id))
 
 @app_views.route('/users', methods=['POST'], strict_slashes=False)
 def add_user():

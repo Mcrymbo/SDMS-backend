@@ -62,8 +62,6 @@ class DBStorage:
 
     def get(self, cls, id):
         """ get object stored in a database """
-        if cls is not User:
-            return None
         if cls not in classes.values():
             return None
 
@@ -72,3 +70,8 @@ class DBStorage:
             if (value.id == id):
                 return value
         return None
+
+    def delete(self, obj=None):
+        """ delete object from storage """
+        if obj is not None:
+            self.__session.delete(obj)
