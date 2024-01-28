@@ -71,5 +71,5 @@ def update_user(user_id):
     for key, value in data.items():
         if key not in ignore:
             setattr(user, key, value)
-    storage.save()
+    user.save()
     return make_response(jsonify(user.to_dict()), 200)

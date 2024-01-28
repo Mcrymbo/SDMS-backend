@@ -17,7 +17,7 @@ class DBStorage:
     connects to mysql database
     """
     __engine = None
-    __session = None
+    session = None
 
     def __init__(self):
         """ instantiate DBStorage """
@@ -37,7 +37,7 @@ class DBStorage:
 
     def save(self):
         """ saves newobject to the database """
-        self.__session.commit()
+        self.session.commit()
 
     def all(self, cls=None):
         """ query database session """
@@ -54,11 +54,11 @@ class DBStorage:
         """ reloads data from the database """
         Base.metadata.create_all(self.__engine)
         sess_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
-        self.__session = scoped_session(sess_factory)
+        self.session = scoped_session(sess_factory)
 
     def close(self):
         """ closes database """
-        self.__session.remove()
+        self.session.remove()
 
     def get(self, cls, id):
         """ get object stored in a database """
@@ -74,4 +74,4 @@ class DBStorage:
     def delete(self, obj=None):
         """ delete object from storage """
         if obj is not None:
-            self.__session.delete(obj)
+            self.session.delete(obj)
