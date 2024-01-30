@@ -4,6 +4,7 @@ model for defining user table
 """
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
+from hashlib import md5
 
 
 class User(BaseModel, Base):
@@ -19,3 +20,12 @@ class User(BaseModel, Base):
         """ initializing the user class """
         super().__init__(*args, **kwargs)
 
+    def __setattr__(self, name, value):
+        """ sets password with md5 encription """
+        if name == 'password':
+            value = md5(value.encode()).hexdigest()
+        super().__setattr__(name, value)
+
+    def __str__(self):
+        """ defines string representation """
+        return "{}".format(self.first_name)

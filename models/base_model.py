@@ -31,7 +31,7 @@ class BaseModel:
 
     def __str__(self):
         """ defines string representation of BaseModel """
-        class_name = self.__class__.__name___
+        class_name = self.__class__.__name__
         return "[{:s}] ({:s}) {}".format(class_name, self.id, self.__dict__)
 
     def save(self):
