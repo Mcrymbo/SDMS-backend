@@ -21,6 +21,8 @@ class Player(BaseModel, Base):
     Weight = Column(Float, nullable=True)
     age = Column(Integer, nullable=True)
     is_male = Column(Boolean, nullable=False)
+    team_id = Column(String(60), ForeignKey('teams.id', onupdate='CASCADE', ondelete='CASCADE'), nullable=False)
+    coach_id = Column(String(60), ForeignKey('coaches.id', onupdate='CASCADE', ondelete='CASCADE'), nullable=False)
 
     def __init__(self, *args, **kwargs):
         """ initializes player class """

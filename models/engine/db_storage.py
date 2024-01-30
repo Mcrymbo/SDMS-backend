@@ -7,11 +7,13 @@ from models.base_model import Base, BaseModel
 from models.user import User
 from models.event import Event
 from models.player import Player
+from models.team import Team
+from models.coach import Coach
 from os import getenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-classes = {'User': User, 'Event': Event, 'Player': Player}
+classes = {'User': User, 'Event': Event, 'Player': Player, 'Team': Team, 'Coach': Coach}
 
 
 class DBStorage:
