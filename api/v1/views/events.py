@@ -25,7 +25,7 @@ def get_event(event_id):
 	return jsonify(event.to_dict)
 
 @app_views('events/<event_id>', methods=['DELETE'], strict_slashes=False)
-def del_event(event_id):
+def delete_event(event_id):
 	"""delete an event from db"""
 	event = storage.get(Event, event_id)
 	if not event:
