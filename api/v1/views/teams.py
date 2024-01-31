@@ -2,7 +2,7 @@
 """serves team data to the api"""
 
 from api.v1.views import app_views
-from models.event import Team
+from models.team import Team
 from models import storage
 from flask import jsonify, make_response, abort, request
 
