@@ -1,4 +1,4 @@
---Create a database and 3 users and grant them all the permissions.
+/*Create a database and 3 users and grant them all the permissions. */
 
 CREATE DATABASE IF NOT EXISTS sdms_db;
 USE sdms_db;
