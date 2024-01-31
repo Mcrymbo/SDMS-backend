@@ -10,3 +10,4 @@ from api.v1.views.index import *
 from api.v1.views.users import *
 from api.v1.views.events import *
 from api.v1.views.teams import *
+from api.v1.views.coaches import *

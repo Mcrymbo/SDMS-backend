@@ -43,7 +43,7 @@ def add_event():
 		abort(400)
 
 	if 'name' not in data:
-		abort(400, description="Missing name")
+		abort(400, description="Missing name in the request")
 
 	event = Event(**data)
 	storage.new(event)
