@@ -6,8 +6,12 @@ from flask import Flask
 from flask import make_response, jsonify
 from api.v1.views import app_views
 from models import storage
+from flask_jwt_extended import JWTManager
 
-app = Flask(__name__)
+app = Flask(__name__)i
+
+jwt = JWTManager(app)
+
 app.register_blueprint(app_views)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
