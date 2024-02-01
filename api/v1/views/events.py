@@ -5,9 +5,11 @@ from api.v1.views import app_views
 from models.event import Event
 from models import storage
 from flask import jsonify, make_response, abort, request
+from flask_jwt_extended import jwt_required
 
 
 @app_views.route('/events', methods=['GET'], strict_slashes=False)
+@jwt_required
 def get_events():
 	"""get events from db"""
 	events = storage.all('Event').values()
@@ -17,6 +19,7 @@ def get_events():
 	return jsonify(event_list)
 
 @app_views.route('events/<event_id>', methods=['GET'], strict_slashes=False)
+@jwt_required
 def get_event(event_id):
 	"""get an event using an id"""
 	event = storage.get(Event, event_id)
@@ -25,6 +28,7 @@ def get_event(event_id):
 	return jsonify(event.to_dict)
 
 @app_views('events/<event_id>', methods=['DELETE'], strict_slashes=False)
+@jwt_required
 def delete_event(event_id):
 	"""delete an event from db"""
 	event = storage.get(Event, event_id)
@@ -36,6 +40,7 @@ def delete_event(event_id):
 	return make_response('Event with id {} deleted'.format(event.id))
 
 @app_views('/events', methods=['POST'], strict_slashes=False)
+@jwt_required
 def add_event():
 	"""adds an event to the db"""
 	data = request.get_json()
@@ -51,6 +56,7 @@ def add_event():
 	return make_response(jsonify(event.to_dict), 201)
 
 @app_views.route('/events/<event_id>', methods=['PUT'], strict_slashes=False)
+@jwt_required
 def update_event(event_id):
 	"""update an event in the db using an id"""
 	data  = request.get_json()

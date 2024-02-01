@@ -5,9 +5,11 @@ from api.v1.views import app_views
 from models.team import Team
 from models import storage
 from flask import jsonify, make_response, abort, request
+from flask_jwt_extended import jwt_required
 
 
 @app_views.route('/teams', methods=['GET'], strict_slashes=False)
+@jwt_required
 def get_teams():
 	"""get all the teams from db"""
 	teams = storage.all('Team').values()
@@ -18,6 +20,7 @@ def get_teams():
 	return jsonify(team_list)
 
 @app_views.route('/teams/<team_id>', methods=['GET'], strict_slashes=False)
+@jwt_required
 def get_team(team_id):
 	"""get a team by using the id"""
 	team = storage.get(Team, team_id)
@@ -27,6 +30,7 @@ def get_team(team_id):
 	return jsonify(team.to_dict())
 
 @app_views.route('/teams/<team_id>', methods=["DELETE"], strict_slashes=False)
+@jwt_required
 def delete_team(team_id):
 	"""delete a team"""
 	team = storage.get(Team, team_id)
@@ -36,6 +40,7 @@ def delete_team(team_id):
 	return jsonify(team.to_dict())
 
 @app_views.route('/teams/<team_id>', methods=["DELETE"], strict_slashes=False)
+@jwt_required
 def delete_team(team_id):
 	"""delete team from db"""
 	team = storage.get(Team, team_id)
@@ -47,6 +52,7 @@ def delete_team(team_id):
 	return make_response('Team with id {} deleted'.format(team_id))
 
 @app_views.route('/teams', methods=['POST'], strict_slashes=False)
+@jwt_required
 def add_team():
 	"""add a team to the db"""
 	data = request.get_json()
@@ -65,6 +71,7 @@ def add_team():
 		return make_response(jsonify(team.to_dict()), 201)
 	
 @app_views.route('/teams/<team_id>', methods=['PUT'], strict_slashes=False)
+@jwt_required
 def update_team(team_id):
 	"""update the details of a team"""
 	data = request.get_json()
