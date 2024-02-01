@@ -8,7 +8,7 @@ from flask import jsonify, make_response, abort, request
 from flask_jwt_extended import jwt_required
 
 @app_views.route('/coaches', methods=['GET'], strict_slashes=False)
-@jwt_required
+@jwt_required()
 def get_coaches():
 	"""get coaches from db"""
 	coaches = storage.all('coach').values()
@@ -19,7 +19,7 @@ def get_coaches():
 	return jsonify(coach_list)
 
 @app_views.route('/coaches/<coach_id>', methods=['GET'], strict_slashes=False)
-@jwt_required
+@jwt_required()
 def get_coach(coach_id):
 	""" Get a coach from db with id"""
 	coach = storage.get(Coach, coach_id)
@@ -28,7 +28,7 @@ def get_coach(coach_id):
 	return jsonify(coach.to_dict())
 
 @app_views.route('/coaches/<coach_id>', methods=["DELETE"], strict_slashes=False)
-@jwt_required
+@jwt_required()
 def delete_coach(coach_id):
 	"""delete a  coach from db"""
 	coach = storage.get(Coach, coach_id)
@@ -40,7 +40,7 @@ def delete_coach(coach_id):
 	return make_response('Coach with id {} deleted'.format(coach.id))
 
 @app_views.route('/coaches', methods=['POST'], strict_slashes=False)
-@jwt_required
+@jwt_required()
 def add_coach():
 	"""add a coach to the db"""
 	data = request.get_json()
@@ -56,7 +56,7 @@ def add_coach():
 	return make_response(jsonify(coach.to_dict()), 201)
 
 @app_views.route('/coaches/<coach_id>', methods=['PUT'], strict_slashes=False)
-@jwt_required
+@jwt_required()
 def update_coach(coach_id):
 	"""update the particulars of a coach"""
 	data = request.get_json()
