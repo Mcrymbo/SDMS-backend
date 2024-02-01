@@ -6,11 +6,9 @@ from api.v1.views import app_views
 from models.user import User
 from models import storage
 from flask import jsonify, make_response, abort, request
-from flask_jwt_extended import jwt_required
 
 
 @app_views.route('/users', methods=['GET'], strict_slashes=False)
-@jwt_required()
 def users():
     """ Get users from the database """
     users_a = storage.all('User').values()
@@ -23,7 +21,6 @@ def users():
     return jsonify(user_list)
 
 @app_views.route('/users/<user_id>', methods=['GET'], strict_slashes=False)
-@jwt_required()
 def user(user_id):
     """ gets a user """
     user = storage.get(User, user_id)
@@ -33,7 +30,6 @@ def user(user_id):
     return jsonify(user.to_dict())
 
 @app_views.route('/users/<user_id>', methods=["DELETE"], strict_slashes=False)
-@jwt_required()
 def delete_user(user_id):
     """ delte a user from database """
     user = storage.get(User, user_id)
