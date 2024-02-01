@@ -12,3 +12,4 @@ from api.v1.views.events import *
 from api.v1.views.teams import *
 from api.v1.views.coaches import *
 from api.v1.views.players import *
+from api.v1.views.login import *
