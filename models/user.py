@@ -6,7 +6,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from hashlib import md5
 import models
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash
 
 
 class User(BaseModel, Base):
