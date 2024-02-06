@@ -7,8 +7,10 @@ from flask import make_response, jsonify
 from api.v1.views import app_views
 from models import storage
 from flask_jwt_extended import JWTManager
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 app.config.from_prefixed_env()
 
 jwt = JWTManager(app)

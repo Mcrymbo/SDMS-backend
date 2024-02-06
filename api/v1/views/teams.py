@@ -9,7 +9,6 @@ from flask_jwt_extended import jwt_required
 
 
 @app_views.route('/teams', methods=['GET'], strict_slashes=False)
-@jwt_required()
 def get_teams():
 	"""get all the teams from db"""
 	teams = storage.all('Team').values()
