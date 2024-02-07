@@ -9,15 +9,20 @@ from flask_jwt_extended import jwt_required
 
 
 @app_views.route('/teams', methods=['GET'], strict_slashes=False)
-@jwt_required()
 def get_teams():
-	"""get all the teams from db"""
-	teams = storage.all('Team').values()
-	if len(teams) == 0:
-		abort(404)
-	team_list = [team.to_dict() for team in teams]
+    """get all the teams from db"""
+    teams = storage.all('Team').values()
+    if len(teams) == 0:
+        abort(404)
+    team_list = []
+    for team in teams:
+        team_dict = team.to_dict()
 
-	return jsonify(team_list)
+        coach = team.coach
+        if coach:
+            team_dict['coach'] = coach.to_dict()
+        team_list.append(team_dict)
+    return jsonify(team_list)
 
 @app_views.route('/teams/<team_id>', methods=['GET'], strict_slashes=False)
 @jwt_required()

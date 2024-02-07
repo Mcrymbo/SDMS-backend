@@ -32,8 +32,8 @@ def login():
         access_token = create_access_token(identity=user['id'])
         refresh_token = create_refresh_token(identity=user['id'])
         return jsonify({
-                        'message': 'logged in',
+                        'message': 'Welcome {} {}'.format(user['first_name'], user['last_name']),
                         'access_token': access_token,
                         'refresh_token': refresh_token
                         }), 201
-    return jsonify({'error': 'invalid email or password'}), 400
+    return jsonify({'error': 'invalid email or password'}), 401

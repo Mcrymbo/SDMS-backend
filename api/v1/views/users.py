@@ -10,7 +10,6 @@ from flask_jwt_extended import jwt_required
 
 
 @app_views.route('/users', methods=['GET'], strict_slashes=False)
-@jwt_required()
 def users():
     """ Get users from the database """
     users_a = storage.all('User').values()
@@ -55,10 +54,13 @@ def add_user():
         if field not in data:
             abort(400, description='missing {} in the request'.format(field))
 
-    user = User(**data)
-    storage.new(user)
-    storage.save()
-    return make_response(jsonify(user.to_dict()), 201)
+    if User.get_user(data['email']) is None:
+        storage.new(User(**data))
+        storage.save()
+        return make_response(jsonify({"message": "user created successfully"}), 201)
+    else:
+        return make_response(jsonify({"error": "Email already exists"}), 409) 
+
 
 @app_views.route('/users/<user_id>', methods=['PUT'], strict_slashes=False)
 @jwt_required
