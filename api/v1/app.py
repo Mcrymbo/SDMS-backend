@@ -8,10 +8,20 @@ from api.v1.views import app_views
 from models import storage
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
+from enum import Enum
+import json
+
+
+class CustomEncorder(json.JSONEncoder):
+    def default(self, object):
+        if isinstance(obj, Enum):
+            return obj.value
+        return super().default(obj)
 
 app = Flask(__name__)
 CORS(app)
 app.config.from_prefixed_env()
+app.json_encoder = CustomEncorder
 
 jwt = JWTManager(app)
 

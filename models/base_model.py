@@ -9,7 +9,7 @@ import uuid
 import models
 
 Base = declarative_base()
-time_format = '%Y-%m-%dT%H:%M:%S.%f'
+time_format = '%Y-%m-%d %H:%M:%S'
 
 class BaseModel:
     id = Column(String(60), primary_key=True)

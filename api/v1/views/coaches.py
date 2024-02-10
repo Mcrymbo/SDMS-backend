@@ -8,10 +8,9 @@ from flask import jsonify, make_response, abort, request
 from flask_jwt_extended import jwt_required
 
 @app_views.route('/coaches', methods=['GET'], strict_slashes=False)
-@jwt_required()
 def get_coaches():
 	"""get coaches from db"""
-	coaches = storage.all('coach').values()
+	coaches = storage.all('Coach').values()
 	if len(coaches) == 0:
 		abort(404)
 	coach_list = [coach.to_dict() for coach in coaches]

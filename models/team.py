@@ -19,6 +19,7 @@ class Team(BaseModel, Base):
     """ class for creating team table """
     __tablename__ = 'teams'
     name = Column(String(60), nullable=False)
+    status = Column( String(60), nullable=False)
     #events = relationship('Event', secondary=team_events, viewonly=False)
     players = relationship('Player', backref='team')
     coach_id = Column(String(60), ForeignKey('coaches.id', onupdate='CASCADE', ondelete='CASCADE'))

@@ -7,18 +7,20 @@ from models import storage
 from flask import jsonify, make_response, abort, request
 from flask_jwt_extended import jwt_required
 
+
 @app_views.route('/players', methods=['GET'], strict_slashes=False)
-@jwt_required()
 def get_players():
     """get players from db"""
-    players = storage.all('Player').values()
+    players = storage.all(Player).values()
     if len(players) == 0:
     	abort(404)
-    player_list = [player.to_dict() for player in players]
+    player_list = []
+    for player in players:
+        player_list.append(player.to_dict())
+
     return jsonify(player_list)
 
 @app_views.route('/players/<player_id>', methods=['GET'], strict_slashes=False)
-@jwt_required()
 def get_player(player_id):
     """get one player from db"""
     Player = storage.all(Player, player_id)
@@ -39,7 +41,6 @@ def delete_player(player_id):
     return make_response('Player with id {} deleted'.format(player.id))
 
 @app_views.route('/players', methods=['POST'], strict_slashes=False)
-@jwt_required()
 def add_player():
     """add a player to the db"""
     data = request.get_json()
