@@ -12,7 +12,7 @@ from flask import jsonify, abort, make_response
 
 def category_players(players, categories):
     """ gets all players of a given category """
-
+    
     if len(players) == 0 or len(categories) == 0:
         abort(404)
     
@@ -26,40 +26,43 @@ def category_players(players, categories):
         player.category = player.category.to_dict()
         player_list.append(player.to_dict())
 
-    female = []
-    male = []
+    data = []
 
     for category in cat_list:
-        obj_male = {'name': category['name'], 'players': []}
-        obj_female = {'name': category['name'], 'players': []}
+        obj = {'name': category['name'], 'players': []}
         for player in player_list:
             if player['category']['id'] == category['id']:
                 mod_player = player.copy()
                 del mod_player['category']
-                if mod_player['is_male']:
-                    mod_player['gender'] = 'male'
-                    obj_male['players'].append(mod_player)
-                elif mod_player['is_male'] is False:
-                    mod_player['gender'] = 'female'
-                    obj_female['players'].append(mod_player)
+                obj['players'].append(mod_player)
 
-        female.append(obj_female)
-        male.append(obj_male)
+        data.append(obj)
      
-    return {'Male': male, 'Female': female}
+    return data
 
-@app_views.route('/category_players', methods=['GET'], strict_slashes=False)
-def get_category_players():
-    """ gets all players of an event in a category """
-    
-    players = storage.all(Player).values()
+def cat_players(players, category_id):
+    """ gets all players of a given category """
+
     categories = storage.all(Category).values()
     
-    data = category_players(players, categories)
-    return jsonify(data)
+    if len(players) == 0:
+        abort(404)
+
+    cat_list = []
+    for category in categories:
+        category.assign_players(players)
+        cat_list.append(category.to_dict())
+    
+    player_list = []
+    for player in players:
+        player.category = player.category.to_dict()
+        if player.category['id'] == category_id:
+            player_list.append(player.to_dict())
+         
+    return jsonify(player_list) 
 
 @app_views.route('/events/players', methods=['GET'], strict_slashes=False)
-def get_event_players():
+def get_events_players():
     """ gets all players of an event """
     events = storage.all(Event).values()
     if len(events) == 0:
@@ -77,27 +80,72 @@ def get_event_players():
     
     return jsonify(player_list), 200
 
-@app_views.route('/events/category_players', methods=['GET'], strict_slashes=False)
-def get_event_category_players():
+@app_views.route('/events/<event_id>/players', methods=['GET'], strict_slashes=False)
+def get_event_players(event_id):
     """ gets all players of an event """
-    events = storage.all(Event).values()
-    categories = storage.all(Category).values()
-    if len(events) == 0:
+    event = storage.get(Event, event_id)
+    if not event:
         abort(404)
     
-    player_list = []
-    lst = []
+    male = []
+    female = []
+    players = storage.event_players(event.to_dict()['id'])
+    for player in players:
+        if player.to_dict()['is_male']:
+            male.append(player.to_dict())
+        else:
+            female.append(player.to_dict())
+    
+    return jsonify({'Female': female, 'Male': male}), 200
 
-    for event in events:
-        cobj = {'Event': event.to_dict()['name'], 'category': []}
-        obj = {'event': event.to_dict()['name'], 'players': []}
-        players = storage.event_players(event.to_dict()['id'])
-        for player in players:
-            obj['players'].append(player)
+@app_views.route('/events/<event_id>/category_players', methods=['GET'], strict_slashes=False)
+def get_event_cat_players(event_id):
+    """ gets all players of an event """
+    event = storage.get(Event, event_id)
+    categories = storage.all(Category).values()
+    if not event:
+        abort(404)
+    
+    male = []
+    female = []
+    players = storage.event_players(event.to_dict()['id'])
+    for player in players:
+        if player.to_dict()['is_male']:
+            male.append(player)
+        else:
+            female.append(player)
 
-            data = category_players(obj['players'], categories)
-            cobj['category'].append(data)
-        player_list.append(obj)
+    male = category_players(male, categories)
+    female = category_players(female, categories) 
 
-        lst.append(cobj)
-    return jsonify(lst), 200
+    female_data = [category for category in female if len(category['players']) > 0]
+    male_data = [category for category in male if len(category['players']) > 0 ]
+
+    return jsonify({'Female': female_data, 'Male': male_data}), 200
+
+@app_views.route('/events/<event_id>/categories/<cat_id>/players', methods=['GET'], strict_slashes=False)
+def get_event_single_cat_players(event_id, cat_id):
+    """ gets all players of an event """
+    event = storage.get(Event, event_id)
+    #categories = storage.get(Category, cat_id)
+    if not event:
+        abort(404)
+    
+    male = []
+    female = []
+    players = storage.event_players(event.to_dict()['id'])
+    for player in players:
+        if player.to_dict()['is_male']:
+            male.append(player.to_dict())
+        else:
+            female.append(player.to_dict())
+
+    #male_data = cat_players(male, cat_id)
+    #female_data = cat_players(female, cat_id) 
+
+    #female_data = [category for category in female if len(category['players']) > 0]
+    #male_data = [category for category in male if len(category['players']) > 0 ]
+
+    return jsonify({'Female': female, 'Male': male}), 200
+
+
