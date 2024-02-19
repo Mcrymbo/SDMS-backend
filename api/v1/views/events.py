@@ -38,7 +38,6 @@ def delete_event(event_id):
 	return make_response('Event with id {} deleted'.format(event.id))
 
 @app_views.route('/events', methods=['POST'], strict_slashes=False)
-@jwt_required()
 def add_event():
 	"""adds an event to the db"""
 	data = request.get_json()
