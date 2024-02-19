@@ -7,6 +7,7 @@ from models.event import Event
 from models.player import Player
 from models.team import Team
 from models.coach import Coach
+from models.category import Category
 from models import storage
 from flask_admin.contrib.sqla import ModelView
 from flask_wtf import FlaskForm
@@ -52,6 +53,11 @@ class CoachAdmin(ModelView):
         if is_created:
             model.id = str(uuid.uuid4())
 
+class CategoryAdmin(ModelView):
+    def on_model_change(self, form, model, is_created):
+        if is_created:
+            model.id = str(uuid.uuid4())
+
 admin = Admin(app, name='Admin Panel')
 
 admin.add_view(UserAdmin(User, storage.reload()))
@@ -59,6 +65,7 @@ admin.add_view(EventAdmin(Event, storage.reload()))
 admin.add_view(PlayerAdmin(Player, storage.reload()))
 admin.add_view(TeamAdmin(Team, storage.reload()))
 admin.add_view(CoachAdmin(Coach, storage.reload()))
+admin.add_view(CategoryAdmin(Category, storage.reload()))
 
 
 if __name__ == '__main__':

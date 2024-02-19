@@ -6,14 +6,15 @@ import models
 from models.base_model import Base, BaseModel
 from models.user import User
 from models.event import Event
-from models.player import Player
+from models.player import Player, event_players
 from models.team import Team
 from models.coach import Coach
+from models.category import Category
 from os import getenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-classes = {'User': User, 'Event': Event, 'Player': Player, 'Team': Team, 'Coach': Coach}
+classes = {'User': User, 'Event': Event, 'Player': Player, 'Team': Team, 'Coach': Coach, 'Category': Category}
 
 
 class DBStorage:
@@ -85,3 +86,9 @@ class DBStorage:
         """ delete object from storage """
         if obj is not None:
             self.__session.delete(obj)
+
+    def event_players(self, event_id):
+        return self.__session.query(Player) \
+            .join(event_players) \
+            .filter(event_players.c.event_id == event_id) \
+            .all()

@@ -4,6 +4,7 @@ defines participants model
 """
 from sqlalchemy import Table, Column, String, ForeignKey, Integer, Boolean, Float
 from models.event import Event
+from models.category import Category
 from sqlalchemy.orm import relationship
 from models.base_model import BaseModel, Base
 
