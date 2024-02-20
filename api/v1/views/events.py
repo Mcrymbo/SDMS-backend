@@ -9,7 +9,6 @@ from flask_jwt_extended import jwt_required
 
 
 @app_views.route('/events', methods=['GET'], strict_slashes=False)
-@jwt_required()
 def get_events():
 	"""get events from db"""
 	events = storage.all('Event').values()
