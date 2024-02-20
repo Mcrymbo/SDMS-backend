@@ -12,7 +12,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 app.config.from_prefixed_env()
-app.json_encoder = CustomEncorder
+
 
 jwt = JWTManager(app)
 
