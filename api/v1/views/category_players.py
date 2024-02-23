@@ -8,13 +8,14 @@ from models.player import Player, event_players
 from models.event import Event
 from models.category import Category
 from flask import jsonify, abort, make_response
+from flask_jwt_extended import jwt_required
 
 
 def category_players(players, categories):
     """ gets all players of a given category """
     
     if len(players) == 0 or len(categories) == 0:
-        abort(404)
+        return []
     
     cat_list = []
     for category in categories:
@@ -62,6 +63,7 @@ def cat_players(players, category_id):
     return jsonify(player_list) 
 
 @app_views.route('/events/players', methods=['GET'], strict_slashes=False)
+@jwt_required()
 def get_events_players():
     """ gets all players of an event """
     events = storage.all(Event).values()
@@ -99,12 +101,13 @@ def get_event_players(event_id):
     return jsonify({'Female': female, 'Male': male}), 200
 
 @app_views.route('/events/<event_id>/category_players', methods=['GET'], strict_slashes=False)
+@jwt_required()
 def get_event_cat_players(event_id):
     """ gets all players of an event """
     event = storage.get(Event, event_id)
     categories = storage.all(Category).values()
     if not event:
-        abort(404)
+        abort (404)
     
     male = []
     female = []
@@ -121,9 +124,12 @@ def get_event_cat_players(event_id):
     female_data = [category for category in female if len(category['players']) > 0]
     male_data = [category for category in male if len(category['players']) > 0 ]
 
-    return jsonify({'Female': female_data, 'Male': male_data}), 200
+    data = {'Female': female_data, 'Male': male_data }
+    
+    return jsonify(data), 200
 
 @app_views.route('/events/<event_id>/categories/<cat_id>/players', methods=['GET'], strict_slashes=False)
+@jwt_required()
 def get_event_single_cat_players(event_id, cat_id):
     """ gets all players of an event """
     event = storage.get(Event, event_id)

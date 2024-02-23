@@ -8,6 +8,7 @@ from models.player import Player
 from models.team import Team
 from models.coach import Coach
 from models.category import Category
+from models.roles import Roles
 from models import storage
 from flask_admin.contrib.sqla import ModelView
 from flask_wtf import FlaskForm
@@ -21,12 +22,20 @@ app.config['SECRET_KEY'] = 'mysecret_key'
 
 
 class UserAdmin(ModelView):
+    column_list = ['first_name', 'last_name', 'email', 'roles']
     def on_model_change(self, form, model, is_created):
         if is_created:
             model.id = str(uuid.uuid4())
 
 class EventAdmin(ModelView):
     column_list = ['name', 'users']
+    def on_model_change(self, form, model, is_created):
+        if is_created:
+            model.id = str(uuid.uuid4())
+
+
+class RoleAdmin(ModelView):
+    column_list = ['name', 'weight']
     def on_model_change(self, form, model, is_created):
         if is_created:
             model.id = str(uuid.uuid4())
@@ -66,6 +75,7 @@ admin.add_view(PlayerAdmin(Player, storage.reload()))
 admin.add_view(TeamAdmin(Team, storage.reload()))
 admin.add_view(CoachAdmin(Coach, storage.reload()))
 admin.add_view(CategoryAdmin(Category, storage.reload()))
+admin.add_view(RoleAdmin(Roles, storage.reload()))
 
 
 if __name__ == '__main__':

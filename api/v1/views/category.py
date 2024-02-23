@@ -6,9 +6,11 @@ from models.category import Category
 from api.v1.views import app_views
 from models import storage
 from flask import make_response, jsonify, abort, request
+from flask_jwt_extended import jwt_required
 
 
 @app_views.route('/categories', methods=['GET'], strict_slashes=False)
+@jwt_required()
 def categories():
     """ gets all categories """
 
@@ -23,6 +25,7 @@ def categories():
     return jsonify(cat_all), 200
 
 @app_views.route('/categories/<cat_id>', methods=['GET'], strict_slashes=False)
+@jwt_required()
 def category(cat_id):
     """ cat one category of specifi id """
     category = storage.get(Category, cat_id)
@@ -32,6 +35,7 @@ def category(cat_id):
     return jsonify(category.to_dict()), 200
 
 @app_views.route('categories', methods=['POST'], strict_slashes=False)
+@jwt_required()
 def post_category():
     """ add a category """
     data = request.get_json()
@@ -49,6 +53,7 @@ def post_category():
     return jsonify(category.to_dict()), 201
 
 @app_views.route('categories/<cat_id>', methods=['DELETE'], strict_slashes=False)
+@jwt_required()
 def delete_category(cat_id):
     """ deleltes a category """
     category = storage.get(Category, cat_id)
