@@ -4,6 +4,7 @@ model for creating event
 """
 from sqlalchemy import Column, String, ForeignKey, Table
 from models.base_model import BaseModel, Base
+from models.category import Category
 from models.user import User
 from sqlalchemy.orm import relationship
 
@@ -21,6 +22,7 @@ class Event(BaseModel, Base):
     __tablename__ = 'events'
     name = Column(String(50), nullable=False, unique=True)
     users = relationship('User', secondary=event_users, viewonly=True, backref='event')
+    categories = relationship('Category', backref='events')
 
     def __init__(self, *args, **kwargs):
         """ initializes Event class """

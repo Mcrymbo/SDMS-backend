@@ -10,11 +10,12 @@ from models.player import Player, event_players
 from models.team import Team
 from models.coach import Coach
 from models.category import Category
+from models.roles import Roles
 from os import getenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-classes = {'User': User, 'Event': Event, 'Player': Player, 'Team': Team, 'Coach': Coach, 'Category': Category}
+classes = {'User': User, 'Event': Event, 'Player': Player, 'Team': Team, 'Coach': Coach, 'Category': Category, 'Roles': Roles}
 
 
 class DBStorage:
@@ -92,3 +93,10 @@ class DBStorage:
             .join(event_players) \
             .filter(event_players.c.event_id == event_id) \
             .all()
+
+    def user_role(self, role_id):
+        """ assigns role to a user """
+        return self.__session.query(User) \
+                .join(user_roles) \
+                .filter(user_roles.c.user_id == role_id) \
+                .all()

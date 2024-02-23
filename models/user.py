@@ -3,7 +3,7 @@
 model for defining user table
 """
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String
+from sqlalchemy import Column, String, ForeignKey
 from hashlib import md5
 import models
 from werkzeug.security import generate_password_hash
